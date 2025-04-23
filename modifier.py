@@ -3,16 +3,19 @@ import re
 
 def extraer_marcadores(doc_path):
     doc = Document(doc_path)
-    marcadores = set()
+    marcadores = []  # Ahora usamos una lista en lugar de set
     
     for paragraph in doc.paragraphs:
         text = paragraph.text
-        # Buscamos todos los patrones entre ++ sin importar formato
+        # Buscamos todos los patrones entre ++
         matches = re.findall(r'\+(.*?)\+', text)
         for match in matches:
-            marcadores.add(match.strip())
+            marcador = match.strip()
+            # Verificamos si el marcador ya está en la lista antes de agregar
+            if marcador not in marcadores:
+                marcadores.append(marcador)
     
-    return sorted(marcadores)
+    return marcadores  # Retornamos en orden de aparición
 
 def reemplazar_marcadores(doc_path, reemplazos, nombre_salida):
     doc = Document(doc_path)
@@ -58,7 +61,7 @@ def main():
         print("No se encontraron marcadores (texto entre +) en el documento.")
         return
     
-    print("\nSe encontraron los siguientes marcadores para reemplazar:")
+    print("\nSe encontraron los siguientes marcadores para reemplazar (en orden de aparición):")
     reemplazos = {}
     
     for marcador in marcadores:
