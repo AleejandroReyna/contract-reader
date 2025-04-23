@@ -12,7 +12,7 @@ def extraer_marcadores(doc_path):
         for match in matches:
             marcadores.add(match.strip())
     
-    return marcadores
+    return sorted(marcadores)
 
 def reemplazar_marcadores(doc_path, reemplazos, nombre_salida):
     doc = Document(doc_path)
